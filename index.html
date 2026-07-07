@@ -14,20 +14,79 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #ffffff; /* Change to #000 if you prefer a black background */
+            background-color: #ffffff;
+            overflow: hidden;
+            position: relative;
         }
 
         /* Displays the image at its exact true dimensions */
         .normal-img {
-            max-width: 100%; /* Prevents it from overflowing on small screens */
+            max-width: 100%;
             height: auto;
             border: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Confetti Container */
+        .confetti-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* Individual Confetti Piece */
+        .confetti {
+            position: absolute;
+            top: -50px;
+            font-size: 24px;
+            user-select: none;
+            animation: fall linear infinite;
+        }
+
+        /* Falling Animation */
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(105vh) rotate(360deg);
+                opacity: 0.9;
+            }
         }
     </style>
 </head>
 <body>
 
+    <div class="confetti-container" id="confetti-box"></div>
+    
     <img src="https://i.postimg.cc/WpgRrz8Y/jew.webp" alt="Image" class="normal-img">
 
+    <script>
+        const container = document.getElementById('confetti-box');
+        const totalConfetti = 300; // HTML-safe high count for performance
+
+        for (let i = 0; i < totalConfetti; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.innerText = '🎉';
+            
+            // Randomize positions, speeds, and delays
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.animationDuration = (Math.random() * 3 + 2) + 's'; 
+            confetti.style.animationDelay = (Math.random() * 5) + 's';
+            
+            // Randomize size slightly for depth
+            const size = Math.random() * 16 + 20;
+            confetti.style.fontSize = size + 'px';
+
+            container.appendChild(confetti);
+        }
+    </script>
 </body>
 </html>
